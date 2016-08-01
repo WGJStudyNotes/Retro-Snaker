@@ -1,0 +1,50 @@
+#container{
+	height: 550px;
+	width: 1000px;
+	border: 1px solid black;
+	position: relative;
+	margin:0 auto;
+}
+#ground{
+	height: 500px;
+	width: 1000px;
+	background: #ccc;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#control{
+	height: 50px;
+	width: 1000px;
+	position: absolute;
+	top: 500px;
+	left: 0;
+	border-top: 1px solid black;
+}
+#brand{
+	position: absolute;
+	line-height: 50px;
+	left: 10px;
+}
+#buttons{
+	position: absolute;
+	line-height: 50px;
+	right: 10px;
+}
+.block{
+	height: 20px;
+	width: 20px;
+	background: orange;
+	float: left;
+}
+.snake-block{
+	background: red;
+	position: absolute;
+	top: 60px;
+}
+.shiwu{
+	background:black;
+	height: 20px;
+	width: 20px;
+	position: absolute;
+}

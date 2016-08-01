@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> 贪吃蛇2.0</title>
+	<link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+	<div id="container">
+		<div id="ground"></div>
+		<div id="control">
+			<div id="brand">贪吃蛇@wgj</div>
+			<div id="buttons">
+				<button id="btn-start">开始</button>
+				<button id="btn-stop">暂停</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		(function(){
+			var timer=null;
+			
+			var ground={
+				dom:document.getElementById("ground"),
+				createFood:function(){
+					return new Food();
+				}
+			}
+			var snake={
+				body:[],
+				speed:300,
+				direction:"right",
+				move:function(){
+					for (var i = 4; i < snake.body.length; i++) {
+				if (snake.body[i].offsetLeft==snake.body[0].offsetLeft&&snake.body[i].offsetTop==
+					snake.body[0].offsetTop) {
+					game.pause()
+				}
+			}
+				if (snake.body[0].offsetTop>500||snake.body[0].offsetTop<0||snake.body[0].offsetLeft>1000||snake.body[0].offsetLeft<0) {
+					game.pause()
+				}
+				 nextPos={
+				 	left:0,
+				 	top:0
+				 };
+				if (snake.direction=="left") {
+ 					nextPos={
+					left:snake.body[0].offsetLeft-20,
+					top:snake.body[0].offsetTop
+			        };
+				}
+				else if (snake.direction=="right") {
+ 					nextPos={
+					left:snake.body[0].offsetLeft+20,
+					top:snake.body[0].offsetTop
+			        };
+				}
+				else if (snake.direction=="top") {
+ 					nextPos={
+					top:snake.body[0].offsetTop-20,
+					left:snake.body[0].offsetLeft
+			        };
+				}
+				else if (snake.direction=="down") {
+ 					nextPos={
+					top:snake.body[0].offsetTop+20,
+					left:snake.body[0].offsetLeft
+			        };
+				}
+		     if (nextPos.top==ground.food.pos.top&&nextPos.left==ground.food.pos.left) {
+		     	ground.food.dom.className='block snake-block';
+				ground.food.dom.style.left=snake.body[0].offsetLeft+"px";
+				ground.food.dom.style.top=snake.body[0].offsetTop+'px';
+				snake.body[0].style.left=nextPos.left+"px";
+				snake.body[0].style.top=nextPos.top+"px";
+				snake.grow();
+				// snake.eat();
+			}else{
+			for (var i = 0; i <snake.body.length; i++) {
+								var nowPos={
+								left:snake.body[i].offsetLeft,
+								top:snake.body[i].offsetTop
+							}
+								snake.body[i].style.left=nextPos.left+"px";
+								snake.body[i].style.top=nextPos.top+'px';
+								nextPos=nowPos;
+					}
+			}
+				},
+				eat:function(){
+		
+				snake.grow();
+				},
+				grow:function(){
+				snake.body.splice(1,0,ground.food.dom);
+				ground.food=ground.createFood();
+				},
+				die:function(){
+					if (snake.body[0].offsetTop>500||snake.body[0].offsetTop<0||snake.body[0].offsetLeft>1000||snake.body[0].offsetLeft<0) {
+					alert("Game over!");
+					clearInterval(timer);
+				}
+				}
+			};
+			var Food=function(){
+				do{
+				var bFlag=true;
+				this.pos={
+						left:parseInt(Math.random()*50)*20,
+						top:parseInt(Math.random()*24)*20
+				};
+				for (var i = 0; i < snake.body.length; i++) {
+					if(snake.body[i].offsetTop==this.pos.top&&snake.body[i].offsetLeft==this.pos.left)
+					{
+						bFlag=false;
+					}
+				}
+			}while(!bFlag);
+			this.dom=document.createElement("div");
+			this.dom.className="shiwu";
+			this.dom.style.top=this.pos.top+"px";
+			this.dom.style.left=this.pos.left+'px';
+			ground.dom.appendChild(this.dom);
+			}
+			var game={
+				init:function(){
+					for (var i = 0; i < 3; i++) {
+				var oDiv=document.createElement("div");
+				oDiv.className="block snake-block";
+				oDiv.style.left=(3-i)*20+'px';
+				
+				snake.body.push(oDiv);
+				ground.dom.appendChild(oDiv);
+			}
+				ground.food=ground.createFood();
+				// 绑定事件
+				document.onkeydown=function(e){
+				e=e||window.event;
+				var keyCode=e.which||e.keyCode;
+				if (keyCode==37) {
+					if (snake.direction!="right") {
+					snake.direction="left";	
+					}	
+				}
+				else if(keyCode==38){
+					if(snake.direction!="down"){
+						snake.direction="top";
+					};
+				}
+				else if(keyCode==39){
+					if (snake.direction!="left") {
+						snake.direction='right';
+					}	
+				}
+				else if(keyCode==40){
+					if (snake.direction!="top") {
+						snake.direction='down';
+					}
+				}
+				snake.move();
+			}
+			game.start();
+				},
+				start:function(){
+		var oBtnStart=document.getElementById('btn-start');
+		oBtnStart.onclick=function(){
+		   timer=setInterval(function(){
+			snake.move();
+				},150);
+			}
+				},
+				pause:function(){
+					alert("Game over!");
+					clearInterval(timer);
+				},
+				countScore:function(){
+
+				}
+			}
+
+
+
+
+        game.init();
+
+		})()
+	</script>
+</body>
+</html>
